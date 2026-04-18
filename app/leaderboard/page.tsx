@@ -3,7 +3,7 @@ import { prisma } from '@/lib/db'
 import { GAME_META, GAME_SLUGS } from '@/lib/games/types'
 import Link from 'next/link'
 
-export const revalidate = 60
+export const dynamic = 'force-dynamic'
 
 type LeaderboardRow = {
   id: string
