@@ -5,17 +5,25 @@ import Link from 'next/link'
 
 export const revalidate = 60
 
+type LeaderboardRow = {
+  id: string
+  gameType: string
+  wins: number
+  gamesPlayed: number
+  user: { name: string | null; image: string | null }
+}
+
 export default async function LeaderboardPage() {
-  const rows = await prisma.leaderboard.findMany({
+  const rows: LeaderboardRow[] = await prisma.leaderboard.findMany({
     orderBy: { wins: 'desc' },
     take: 100,
     include: { user: { select: { name: true, image: true } } },
   })
 
   const byGame = GAME_SLUGS.reduce((acc, slug) => {
-    acc[slug] = rows.filter(r => r.gameType === slug).slice(0, 5)
+    acc[slug] = rows.filter((r: LeaderboardRow) => r.gameType === slug).slice(0, 5)
     return acc
-  }, {} as Record<string, typeof rows>)
+  }, {} as Record<string, LeaderboardRow[]>)
 
   return (
     <div className="min-h-screen" style={{ background: '#050510' }}>
@@ -43,7 +51,7 @@ export default async function LeaderboardPage() {
                   <div className="text-sm text-gray-500 text-center py-3">No games played yet — be the first!</div>
                 ) : (
                   <div className="space-y-2">
-                    {entries.map((row, i) => (
+                    {entries.map((row: LeaderboardRow, i: number) => (
                       <div key={row.id} className="flex items-center gap-3">
                         <span className={`text-sm font-black w-5 ${i === 0 ? 'text-yellow-400' : i === 1 ? 'text-gray-300' : i === 2 ? 'text-amber-600' : 'text-gray-500'}`}>
                           {i + 1}

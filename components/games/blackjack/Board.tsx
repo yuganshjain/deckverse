@@ -18,7 +18,7 @@ export function BlackjackBoard() {
 
   const over = isGameOver(state)
   const result = over ? getResult(state) : null
-  useGameOver({ over, winner: result === 'player' ? 'player' : result === 'push' ? null : 'dealer', playerId: 'player', gameType: 'blackjack' })
+  useGameOver({ over, winner: state.outcome === 'win' ? 'player' : state.outcome === 'loss' ? 'dealer' : null, playerId: 'player', gameType: 'blackjack' })
   const playerScore = handScore(state.playerHand)
   const dealerScore = handScore(state.dealerHand)
 

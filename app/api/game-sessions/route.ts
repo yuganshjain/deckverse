@@ -18,7 +18,7 @@ export async function POST(req: Request) {
     },
   })
   if ((session?.user as any)?.id && outcome !== 'abandoned') {
-    const userId = (session.user as any).id
+    const userId = (session!.user as any).id
     const existing = await prisma.leaderboard.findUnique({
       where: { userId_gameType: { userId, gameType } },
     })

@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { Card } from '@/components/games/shared/Card'
 import { Table } from '@/components/games/shared/Table'
-import { initGame, applyAction, isGameOver } from '@/lib/games/go-fish/logic'
+import { initGame, applyAction, isGameOver, getResult } from '@/lib/games/go-fish/logic'
 import type { GoFishState } from '@/lib/games/go-fish/logic'
 import type { Rank } from '@/lib/games/types'
 import { useGameOver } from '@/hooks/useGameOver'
@@ -37,7 +37,7 @@ export function GoFishBoard() {
   }
 
   const over = isGameOver(state)
-  useGameOver({ over, winner: state.winner, playerId: 'player', gameType: 'go-fish' })
+  useGameOver({ over, winner: over ? getResult(state).winner : null, playerId: 'player', gameType: 'go-fish' })
   const playerHand = state.hands['player'] ?? []
   const playerRanks = [...new Set(playerHand.map(c => c.rank))]
   const playerBooks = state.books['player'] ?? []

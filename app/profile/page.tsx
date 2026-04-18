@@ -5,18 +5,26 @@ import { Nav } from '@/components/ui/Nav'
 import { GAME_META } from '@/lib/games/types'
 import Link from 'next/link'
 
+type LeaderboardEntry = {
+  id: string
+  gameType: string
+  gamesPlayed: number
+  wins: number
+  highScore: number
+}
+
 export default async function ProfilePage() {
   const session = await auth()
   if (!(session?.user as any)?.id) redirect('/auth/signin')
 
   const userId = (session!.user as any).id
 
-  const leaderboard = await prisma.leaderboard.findMany({
+  const leaderboard: LeaderboardEntry[] = await prisma.leaderboard.findMany({
     where: { userId },
     orderBy: { gamesPlayed: 'desc' },
   })
-  const totalGames = leaderboard.reduce((s, r) => s + r.gamesPlayed, 0)
-  const totalWins = leaderboard.reduce((s, r) => s + r.wins, 0)
+  const totalGames = leaderboard.reduce((s: number, r: LeaderboardEntry) => s + r.gamesPlayed, 0)
+  const totalWins = leaderboard.reduce((s: number, r: LeaderboardEntry) => s + r.wins, 0)
 
   return (
     <div className="min-h-screen" style={{ background: '#050510' }}>
@@ -50,7 +58,7 @@ export default async function ProfilePage() {
           <div>
             <h2 className="text-lg font-bold mb-4">Game Stats</h2>
             <div className="space-y-3">
-              {leaderboard.map(row => {
+              {leaderboard.map((row: LeaderboardEntry) => {
                 const m = GAME_META[row.gameType as keyof typeof GAME_META]
                 if (!m) return null
                 const winRate = row.gamesPlayed ? Math.round((row.wins / row.gamesPlayed) * 100) : 0
