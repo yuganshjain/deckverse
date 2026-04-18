@@ -6,6 +6,7 @@ import { Table } from '@/components/games/shared/Table'
 import { initGame, applyAction, isGameOver, isValidMeld } from '@/lib/games/rummy/logic'
 import type { RummyState } from '@/lib/games/rummy/logic'
 import type { Card as CardType } from '@/lib/games/types'
+import { useGameOver } from '@/hooks/useGameOver'
 
 function aiTurn(s: RummyState): RummyState {
   if (s.currentPlayer !== 'ai' || isGameOver(s)) return s
@@ -66,6 +67,7 @@ export function RummyBoard() {
   }
 
   const over = isGameOver(state)
+  useGameOver({ over, winner: state.winner, playerId: 'player', gameType: 'rummy' })
   const hand = state.hands['player'] ?? []
   const top = state.discardPile[state.discardPile.length - 1]
   const selectedCards = [...selected].map(i => hand[i])

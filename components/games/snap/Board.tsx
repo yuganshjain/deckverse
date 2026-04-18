@@ -5,6 +5,7 @@ import { Card } from '@/components/games/shared/Card'
 import { Table } from '@/components/games/shared/Table'
 import { initGame, applyAction, isGameOver } from '@/lib/games/snap/logic'
 import type { SnapState } from '@/lib/games/snap/logic'
+import { useGameOver } from '@/hooks/useGameOver'
 
 export function SnapBoard() {
   const [state, setState] = useState<SnapState>(() => initGame(['player', 'ai']))
@@ -39,6 +40,7 @@ export function SnapBoard() {
   }
 
   const over = isGameOver(state)
+  useGameOver({ over, winner: state.winner, playerId: 'player', gameType: 'snap' })
   const top = state.centerPile[state.centerPile.length - 1]
   const second = state.centerPile[state.centerPile.length - 2]
   const isMatch = top && second && top.rank === second.rank

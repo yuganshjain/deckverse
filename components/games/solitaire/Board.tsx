@@ -6,6 +6,7 @@ import { Table } from '@/components/games/shared/Table'
 import { initGame, applyAction, isGameOver } from '@/lib/games/solitaire/logic'
 import type { SolitaireState } from '@/lib/games/solitaire/logic'
 import type { Suit } from '@/lib/games/types'
+import { useGameOver } from '@/hooks/useGameOver'
 
 const SUITS: Suit[] = ['hearts', 'diamonds', 'clubs', 'spades']
 const SUIT_SYMBOLS: Record<Suit, string> = { hearts: '♥', diamonds: '♦', clubs: '♣', spades: '♠' }
@@ -47,6 +48,7 @@ export function SolitaireBoard() {
   }
 
   const over = isGameOver(state)
+  useGameOver({ over, winner: over ? 'player' : null, playerId: 'player', gameType: 'solitaire', score: state.moves })
 
   return (
     <Table>

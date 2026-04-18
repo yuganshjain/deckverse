@@ -7,6 +7,7 @@ import { initGame, applyAction, isGameOver } from '@/lib/games/speed/logic'
 import type { SpeedState } from '@/lib/games/speed/logic'
 import type { Card as CardType } from '@/lib/games/types'
 import { rankOrder } from '@/lib/games/deck'
+import { useGameOver } from '@/hooks/useGameOver'
 
 function canPlayOn(card: CardType, pile: CardType[]) {
   if (!pile.length) return true
@@ -51,6 +52,7 @@ export function SpeedBoard() {
   const flip = () => setState(prev => applyAction(prev, { type: 'flip' }, 'player'))
 
   const over = isGameOver(state)
+  useGameOver({ over, winner: state.winner, playerId: 'player', gameType: 'speed' })
   const playerHand = state.hands['player'] ?? []
   const aiHand = state.hands['ai'] ?? []
 

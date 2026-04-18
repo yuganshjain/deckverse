@@ -6,6 +6,7 @@ import { Table } from '@/components/games/shared/Table'
 import { initGame, applyAction, isGameOver, getValidActions } from '@/lib/games/crazy-eights/logic'
 import type { CrazyEightsState } from '@/lib/games/crazy-eights/logic'
 import type { Suit } from '@/lib/games/types'
+import { useGameOver } from '@/hooks/useGameOver'
 
 const SUIT_SYMBOLS: Record<Suit, string> = { hearts: '♥', diamonds: '♦', clubs: '♣', spades: '♠' }
 const SUITS: Suit[] = ['hearts', 'diamonds', 'clubs', 'spades']
@@ -50,6 +51,7 @@ export function CrazyEightsBoard() {
   }
 
   const over = isGameOver(state)
+  useGameOver({ over, winner: state.winner, playerId: 'player', gameType: 'crazy-eights' })
   const top = state.discardPile[state.discardPile.length - 1]
   const validActions = getValidActions(state, 'player')
   const canPlay = validActions.filter(a => a.type === 'play')

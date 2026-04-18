@@ -5,6 +5,7 @@ import { Card } from '@/components/games/shared/Card'
 import { Table } from '@/components/games/shared/Table'
 import { initGame, applyAction, isGameOver, getResult, handScore } from '@/lib/games/blackjack/logic'
 import type { BlackjackState, BlackjackAction } from '@/lib/games/blackjack/logic'
+import { useGameOver } from '@/hooks/useGameOver'
 
 export function BlackjackBoard() {
   const [state, setState] = useState<BlackjackState>(() => initGame(['player']))
@@ -17,6 +18,7 @@ export function BlackjackBoard() {
 
   const over = isGameOver(state)
   const result = over ? getResult(state) : null
+  useGameOver({ over, winner: result === 'player' ? 'player' : result === 'push' ? null : 'dealer', playerId: 'player', gameType: 'blackjack' })
   const playerScore = handScore(state.playerHand)
   const dealerScore = handScore(state.dealerHand)
 

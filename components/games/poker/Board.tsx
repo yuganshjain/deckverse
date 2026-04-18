@@ -5,6 +5,7 @@ import { Card } from '@/components/games/shared/Card'
 import { Table } from '@/components/games/shared/Table'
 import { initGame, applyAction, isGameOver, getValidActions } from '@/lib/games/poker/logic'
 import type { PokerState } from '@/lib/games/poker/logic'
+import { useGameOver } from '@/hooks/useGameOver'
 
 function aiTurn(s: PokerState): PokerState {
   while (s.currentPlayer === 'ai' && !isGameOver(s)) {
@@ -29,6 +30,7 @@ export function PokerBoard() {
   }
 
   const over = isGameOver(state)
+  useGameOver({ over, winner: state.winner, playerId: 'player', gameType: 'poker' })
   const playerHand = state.hands['player'] ?? []
   const validActions = getValidActions(state, 'player')
 

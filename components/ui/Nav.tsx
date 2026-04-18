@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { NavClient } from './NavClient'
 
 export function Nav() {
   const path = usePathname()
@@ -25,11 +26,7 @@ export function Nav() {
           </Link>
         ))}
       </div>
-      <Link href="/games"
-        className="px-5 py-2 rounded-lg text-sm font-semibold transition-all"
-        style={{ background: 'linear-gradient(135deg,#7c3aed,#a855f7)', boxShadow: '0 0 20px rgba(124,58,237,0.4)' }}>
-        Play Free
-      </Link>
+      <NavClient />
     </nav>
   )
 }

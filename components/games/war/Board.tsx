@@ -5,6 +5,7 @@ import { Card } from '@/components/games/shared/Card'
 import { Table } from '@/components/games/shared/Table'
 import { initGame, applyAction, isGameOver } from '@/lib/games/war/logic'
 import type { WarState } from '@/lib/games/war/logic'
+import { useGameOver } from '@/hooks/useGameOver'
 
 export function WarBoard() {
   const [state, setState] = useState<WarState>(() => initGame(['player']))
@@ -15,6 +16,7 @@ export function WarBoard() {
   }
 
   const over = isGameOver(state)
+  useGameOver({ over, winner: state.outcome === 'win' ? 'player' : state.outcome === 'loss' ? 'opponent' : null, playerId: 'player', gameType: 'war' })
   const playerWinning = state.playerPile.length > state.opponentPile.length
 
   return (

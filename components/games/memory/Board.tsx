@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Table } from '@/components/games/shared/Table'
 import { initGame, applyAction, isGameOver } from '@/lib/games/memory/logic'
 import type { MemoryState } from '@/lib/games/memory/logic'
+import { useGameOver } from '@/hooks/useGameOver'
 
 const SUIT_SYMBOLS: Record<string, string> = { hearts: '♥', diamonds: '♦', clubs: '♣', spades: '♠' }
 const SUIT_COLORS: Record<string, string> = { hearts: '#ef4444', diamonds: '#ef4444', clubs: '#c4b5fd', spades: '#c4b5fd' }
@@ -19,6 +20,7 @@ export function MemoryBoard() {
 
   const over = isGameOver(state)
   const score = state.scores['player'] ?? 0
+  useGameOver({ over, winner: over ? 'player' : null, playerId: 'player', gameType: 'memory', score })
 
   return (
     <Table>
